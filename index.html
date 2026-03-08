@@ -1,0 +1,933 @@
+<!DOCTYPE html>
+
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Yourly — Your AI Accountability Partner</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --sand: #F5EFE6;
+      --warm-white: #FDFAF6;
+      --charcoal: #1C1C1E;
+      --clay: #C4704A;
+      --sage: #7D9B7A;
+      --gold: #D4A853;
+      --mist: #E8EDE8;
+      --text-muted: #6B6B6B;
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: 'DM Sans', sans-serif;
+      background: var(--warm-white);
+      color: var(--charcoal);
+      overflow-x: hidden;
+    }
+
+    /* ── LANDING ── */
+    #landing {
+      min-height: 100vh;
+      display: grid;
+      grid-template-rows: auto 1fr auto;
+      background: var(--charcoal);
+      position: relative;
+      overflow: hidden;
+    }
+
+    #landing::before {
+      content: '';
+      position: absolute;
+      top: -20%;
+      right: -15%;
+      width: 60vw;
+      height: 60vw;
+      border-radius: 50%;
+      background: radial-gradient(circle, rgba(196,112,74,0.18) 0%, transparent 70%);
+      pointer-events: none;
+    }
+
+    #landing::after {
+      content: '';
+      position: absolute;
+      bottom: -10%;
+      left: -10%;
+      width: 40vw;
+      height: 40vw;
+      border-radius: 50%;
+      background: radial-gradient(circle, rgba(125,155,122,0.12) 0%, transparent 70%);
+      pointer-events: none;
+    }
+
+    nav {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 2rem 4rem;
+      position: relative;
+      z-index: 10;
+    }
+
+    .logo {
+      font-family: 'Playfair Display', serif;
+      font-size: 1.8rem;
+      font-weight: 900;
+      color: var(--sand);
+      letter-spacing: -0.5px;
+    }
+
+    .logo span { color: var(--clay); }
+
+    nav .tagline-mini {
+      font-size: 0.8rem;
+      color: rgba(245,239,230,0.45);
+      letter-spacing: 2px;
+      text-transform: uppercase;
+    }
+
+    .hero {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      padding: 4rem 2rem;
+      position: relative;
+      z-index: 5;
+    }
+
+    .hero-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      background: rgba(196,112,74,0.15);
+      border: 1px solid rgba(196,112,74,0.35);
+      color: var(--clay);
+      border-radius: 50px;
+      padding: 6px 18px;
+      font-size: 0.78rem;
+      letter-spacing: 1.5px;
+      text-transform: uppercase;
+      margin-bottom: 2.5rem;
+      animation: fadeUp 0.8s ease both;
+    }
+
+    .hero-badge::before { content: '◆'; font-size: 0.6rem; }
+
+    h1 {
+      font-family: 'Playfair Display', serif;
+      font-size: clamp(3rem, 8vw, 6.5rem);
+      font-weight: 900;
+      line-height: 1.0;
+      color: var(--sand);
+      max-width: 900px;
+      animation: fadeUp 0.8s 0.15s ease both;
+    }
+
+    h1 em {
+      font-style: italic;
+      color: var(--clay);
+    }
+
+    .hero-sub {
+      margin-top: 2rem;
+      font-size: 1.15rem;
+      color: rgba(245,239,230,0.6);
+      max-width: 520px;
+      line-height: 1.7;
+      font-weight: 300;
+      animation: fadeUp 0.8s 0.3s ease both;
+    }
+
+    .cta-group {
+      margin-top: 3.5rem;
+      display: flex;
+      gap: 1rem;
+      animation: fadeUp 0.8s 0.45s ease both;
+    }
+
+    .btn-primary {
+      background: var(--clay);
+      color: white;
+      border: none;
+      padding: 1rem 2.5rem;
+      font-family: 'DM Sans', sans-serif;
+      font-size: 1rem;
+      font-weight: 600;
+      border-radius: 4px;
+      cursor: pointer;
+      transition: all 0.2s;
+      letter-spacing: 0.3px;
+    }
+
+    .btn-primary:hover {
+      background: #b5623f;
+      transform: translateY(-1px);
+    }
+
+    .btn-ghost {
+      background: transparent;
+      color: var(--sand);
+      border: 1px solid rgba(245,239,230,0.3);
+      padding: 1rem 2.5rem;
+      font-family: 'DM Sans', sans-serif;
+      font-size: 1rem;
+      font-weight: 400;
+      border-radius: 4px;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+
+    .btn-ghost:hover {
+      border-color: rgba(245,239,230,0.6);
+    }
+
+    .social-proof {
+      padding: 1.5rem 4rem;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 3rem;
+      border-top: 1px solid rgba(245,239,230,0.08);
+      position: relative;
+      z-index: 5;
+      animation: fadeUp 0.8s 0.6s ease both;
+    }
+
+    .proof-item {
+      text-align: center;
+    }
+
+    .proof-num {
+      font-family: 'Playfair Display', serif;
+      font-size: 1.8rem;
+      font-weight: 700;
+      color: var(--sand);
+    }
+
+    .proof-label {
+      font-size: 0.75rem;
+      color: rgba(245,239,230,0.4);
+      letter-spacing: 1px;
+      text-transform: uppercase;
+    }
+
+    /* ── HOW IT WORKS ── */
+    #how {
+      background: var(--warm-white);
+      padding: 8rem 4rem;
+    }
+
+    .section-label {
+      font-size: 0.75rem;
+      letter-spacing: 3px;
+      text-transform: uppercase;
+      color: var(--clay);
+      margin-bottom: 1rem;
+    }
+
+    .section-title {
+      font-family: 'Playfair Display', serif;
+      font-size: clamp(2rem, 4vw, 3.2rem);
+      font-weight: 700;
+      line-height: 1.15;
+      max-width: 600px;
+    }
+
+    .steps-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 3rem;
+      margin-top: 5rem;
+    }
+
+    .step {
+      position: relative;
+    }
+
+    .step-num {
+      font-family: 'Playfair Display', serif;
+      font-size: 5rem;
+      font-weight: 900;
+      color: var(--mist);
+      line-height: 1;
+      margin-bottom: 1.5rem;
+    }
+
+    .step-icon {
+      width: 52px;
+      height: 52px;
+      border-radius: 12px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.5rem;
+      margin-bottom: 1.5rem;
+    }
+
+    .step:nth-child(1) .step-icon { background: rgba(196,112,74,0.1); }
+    .step:nth-child(2) .step-icon { background: rgba(125,155,122,0.1); }
+    .step:nth-child(3) .step-icon { background: rgba(212,168,83,0.1); }
+
+    .step h3 {
+      font-family: 'Playfair Display', serif;
+      font-size: 1.4rem;
+      font-weight: 700;
+      margin-bottom: 0.75rem;
+    }
+
+    .step p {
+      color: var(--text-muted);
+      line-height: 1.7;
+      font-weight: 300;
+    }
+
+    /* ── ONBOARDING FORM ── */
+    #onboarding {
+      background: var(--sand);
+      padding: 8rem 4rem;
+      display: none;
+    }
+
+    #onboarding.active { display: block; }
+
+    .onboard-container {
+      max-width: 680px;
+      margin: 0 auto;
+    }
+
+    .progress-bar-wrap {
+      width: 100%;
+      height: 3px;
+      background: rgba(28,28,30,0.12);
+      border-radius: 10px;
+      margin-bottom: 4rem;
+      overflow: hidden;
+    }
+
+    .progress-bar-fill {
+      height: 100%;
+      background: var(--clay);
+      border-radius: 10px;
+      transition: width 0.4s ease;
+    }
+
+    .step-form {
+      display: none;
+      animation: fadeUp 0.5s ease both;
+    }
+
+    .step-form.active { display: block; }
+
+    .step-q {
+      font-family: 'Playfair Display', serif;
+      font-size: 2rem;
+      font-weight: 700;
+      margin-bottom: 0.5rem;
+      line-height: 1.2;
+    }
+
+    .step-hint {
+      color: var(--text-muted);
+      font-size: 0.95rem;
+      margin-bottom: 2.5rem;
+      font-weight: 300;
+    }
+
+    .form-input {
+      width: 100%;
+      padding: 1rem 1.25rem;
+      background: white;
+      border: 1.5px solid rgba(28,28,30,0.15);
+      border-radius: 6px;
+      font-family: 'DM Sans', sans-serif;
+      font-size: 1rem;
+      color: var(--charcoal);
+      transition: border-color 0.2s;
+      outline: none;
+      margin-bottom: 1rem;
+    }
+
+    .form-input:focus {
+      border-color: var(--clay);
+    }
+
+    textarea.form-input {
+      resize: vertical;
+      min-height: 110px;
+    }
+
+    .time-row {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 1rem;
+      margin-bottom: 1rem;
+    }
+
+    .time-label {
+      font-size: 0.8rem;
+      font-weight: 600;
+      letter-spacing: 1px;
+      text-transform: uppercase;
+      color: var(--text-muted);
+      margin-bottom: 0.4rem;
+    }
+
+    .permission-card {
+      background: white;
+      border: 1.5px solid rgba(28,28,30,0.1);
+      border-radius: 10px;
+      padding: 1.5rem;
+      margin-bottom: 1rem;
+      display: flex;
+      align-items: flex-start;
+      gap: 1rem;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+
+    .permission-card:hover {
+      border-color: var(--clay);
+    }
+
+    .permission-card.selected {
+      border-color: var(--clay);
+      background: rgba(196,112,74,0.04);
+    }
+
+    .perm-icon {
+      width: 40px;
+      height: 40px;
+      border-radius: 8px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.2rem;
+      flex-shrink: 0;
+    }
+
+    .perm-yes .perm-icon { background: rgba(125,155,122,0.15); }
+    .perm-no .perm-icon { background: rgba(196,112,74,0.1); }
+
+    .perm-text h4 {
+      font-size: 0.95rem;
+      font-weight: 600;
+      margin-bottom: 0.2rem;
+    }
+
+    .perm-text p {
+      font-size: 0.83rem;
+      color: var(--text-muted);
+      line-height: 1.5;
+    }
+
+    .form-nav {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-top: 2.5rem;
+    }
+
+    .btn-back {
+      background: none;
+      border: none;
+      color: var(--text-muted);
+      font-family: 'DM Sans', sans-serif;
+      font-size: 0.9rem;
+      cursor: pointer;
+      padding: 0;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .btn-next {
+      background: var(--charcoal);
+      color: white;
+      border: none;
+      padding: 0.9rem 2.5rem;
+      font-family: 'DM Sans', sans-serif;
+      font-size: 0.95rem;
+      font-weight: 600;
+      border-radius: 4px;
+      cursor: pointer;
+      transition: all 0.2s;
+      margin-left: auto;
+    }
+
+    .btn-next:hover {
+      background: #333;
+    }
+
+    /* ── SUCCESS ── */
+    #success {
+      display: none;
+      min-height: 100vh;
+      background: var(--charcoal);
+      align-items: center;
+      justify-content: center;
+      flex-direction: column;
+      text-align: center;
+      padding: 4rem 2rem;
+    }
+
+    #success.active { display: flex; }
+
+    .success-ring {
+      width: 120px;
+      height: 120px;
+      border-radius: 50%;
+      background: rgba(125,155,122,0.15);
+      border: 2px solid var(--sage);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 3rem;
+      margin-bottom: 3rem;
+      animation: pulse 2s ease infinite;
+    }
+
+    .success-title {
+      font-family: 'Playfair Display', serif;
+      font-size: clamp(2.5rem, 5vw, 4rem);
+      color: var(--sand);
+      margin-bottom: 1.5rem;
+    }
+
+    .success-body {
+      color: rgba(245,239,230,0.55);
+      font-size: 1.05rem;
+      max-width: 480px;
+      line-height: 1.7;
+      font-weight: 300;
+      margin-bottom: 3rem;
+    }
+
+    .summary-card {
+      background: rgba(245,239,230,0.06);
+      border: 1px solid rgba(245,239,230,0.1);
+      border-radius: 12px;
+      padding: 2rem;
+      max-width: 460px;
+      width: 100%;
+      text-align: left;
+      margin-bottom: 3rem;
+    }
+
+    .summary-row {
+      display: flex;
+      justify-content: space-between;
+      padding: 0.75rem 0;
+      border-bottom: 1px solid rgba(245,239,230,0.08);
+    }
+
+    .summary-row:last-child { border-bottom: none; }
+
+    .sum-key {
+      font-size: 0.8rem;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      color: rgba(245,239,230,0.35);
+    }
+
+    .sum-val {
+      color: var(--sand);
+      font-size: 0.9rem;
+      font-weight: 500;
+    }
+
+    .whatsapp-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.75rem;
+      background: #25D366;
+      color: white;
+      border: none;
+      padding: 1rem 2.5rem;
+      font-family: 'DM Sans', sans-serif;
+      font-size: 1rem;
+      font-weight: 600;
+      border-radius: 4px;
+      cursor: pointer;
+      transition: all 0.2s;
+      text-decoration: none;
+    }
+
+    .whatsapp-btn:hover {
+      background: #1ebe5b;
+      transform: translateY(-1px);
+    }
+
+    /* ── ERROR / TOAST ── */
+    .toast {
+      position: fixed;
+      bottom: 2rem;
+      right: 2rem;
+      background: #C0392B;
+      color: white;
+      padding: 1rem 1.5rem;
+      border-radius: 6px;
+      font-size: 0.9rem;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.3s;
+      z-index: 9999;
+    }
+
+    .toast.show { opacity: 1; }
+
+    /* ── ANIMATIONS ── */
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(20px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+
+    @keyframes pulse {
+      0%, 100% { box-shadow: 0 0 0 0 rgba(125,155,122,0.3); }
+      50%       { box-shadow: 0 0 0 20px rgba(125,155,122,0); }
+    }
+
+    /* ── RESPONSIVE ── */
+    @media (max-width: 768px) {
+      nav { padding: 1.5rem 1.5rem; }
+      nav .tagline-mini { display: none; }
+      .hero { padding: 3rem 1.5rem; }
+      .social-proof { padding: 1.5rem; gap: 2rem; flex-wrap: wrap; }
+      #how { padding: 5rem 1.5rem; }
+      .steps-grid { grid-template-columns: 1fr; gap: 2rem; }
+      #onboarding { padding: 5rem 1.5rem; }
+      .time-row { grid-template-columns: 1fr; }
+      .cta-group { flex-direction: column; align-items: center; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- ======= LANDING ======= -->
+<section id="landing">
+  <nav>
+    <div class="logo">Your<span>ly</span></div>
+    <div class="tagline-mini">AI Accountability Partner</div>
+  </nav>
+
+  <div class="hero">
+    <div class="hero-badge">Now in Early Access</div>
+    <h1>Stop <em>planning</em> to start.<br>Start <em>doing</em>.</h1>
+    <p class="hero-sub">Yourly is a conversational AI that calls you every morning to set your focus and every evening to celebrate your wins — all through WhatsApp.</p>
+    <div class="cta-group">
+      <button class="btn-primary" onclick="startOnboarding()">Get Started Free →</button>
+      <button class="btn-ghost" onclick="scrollToHow()">See How It Works</button>
+    </div>
+  </div>
+
+  <div class="social-proof">
+    <div class="proof-item">
+      <div class="proof-num">80%+</div>
+      <div class="proof-label">of students procrastinate chronically</div>
+    </div>
+    <div class="proof-item">
+      <div class="proof-num">2 min</div>
+      <div class="proof-label">to complete onboarding</div>
+    </div>
+    <div class="proof-item">
+      <div class="proof-num">2×</div>
+      <div class="proof-label">daily touchpoints to keep you on track</div>
+    </div>
+  </div>
+</section>
+
+<!-- ======= HOW IT WORKS ======= -->
+<section id="how">
+  <div class="section-label">The Method</div>
+  <h2 class="section-title">Three moments that change your whole day</h2>
+
+  <div class="steps-grid">
+    <div class="step">
+      <div class="step-num">01</div>
+      <div class="step-icon">💬</div>
+      <h3>Set Your Goals via WhatsApp</h3>
+      <p>Tell Yourly your tasks anytime in natural language. No apps to download. No new habit to form. Just message us like a friend.</p>
+    </div>
+    <div class="step">
+      <div class="step-num">02</div>
+      <div class="step-icon">☀️</div>
+      <h3>Morning Huddle Call</h3>
+      <p>Each morning, Yourly calls you for a 2-minute focus session. You identify your #1 priority and commit to when and where you'll tackle it.</p>
+    </div>
+    <div class="step">
+      <div class="step-num">03</div>
+      <div class="step-icon">🌙</div>
+      <h3>Evening Reflection Call</h3>
+      <p>Each evening, Yourly calls to celebrate your wins, explore any obstacles with zero judgment, and set your intention for tomorrow.</p>
+    </div>
+  </div>
+
+  <div style="text-align:center; margin-top: 5rem;">
+    <button class="btn-primary" onclick="startOnboarding()" style="font-size: 1.05rem; padding: 1.1rem 3rem;">
+      Start Your Free Trial →
+    </button>
+  </div>
+</section>
+
+<!-- ======= ONBOARDING FORM ======= -->
+<section id="onboarding">
+  <div class="onboard-container">
+
+    <div style="margin-bottom: 1.5rem;">
+      <div class="logo" style="color: var(--charcoal); font-size: 1.4rem;">Your<span>ly</span></div>
+    </div>
+
+    <div class="progress-bar-wrap">
+      <div class="progress-bar-fill" id="progressFill" style="width: 20%;"></div>
+    </div>
+
+    <!-- STEP 1: Name -->
+    <div class="step-form active" data-step="1">
+      <p class="step-q">What should Yourly call you?</p>
+      <p class="step-hint">We'll use this in your daily calls to make them feel personal.</p>
+      <input type="text" class="form-input" id="inputName" placeholder="Your first name" autocomplete="given-name">
+      <div class="form-nav">
+        <div></div>
+        <button class="btn-next" onclick="nextStep(1)">Continue →</button>
+      </div>
+    </div>
+
+    <!-- STEP 2: Phone -->
+    <div class="step-form" data-step="2">
+      <p class="step-q">What's your WhatsApp number?</p>
+      <p class="step-hint">This is where Yourly will send messages and call you. Include your country code.</p>
+      <input type="tel" class="form-input" id="inputPhone" placeholder="+44 7700 900000" autocomplete="tel">
+      <div class="form-nav">
+        <button class="btn-back" onclick="prevStep(2)">← Back</button>
+        <button class="btn-next" onclick="nextStep(2)">Continue →</button>
+      </div>
+    </div>
+
+    <!-- STEP 3: Goals -->
+    <div class="step-form" data-step="3">
+      <p class="step-q">What are your main goals right now?</p>
+      <p class="step-hint">Be as specific or broad as you like. Yourly will help you break these down day by day.</p>
+      <textarea class="form-input" id="inputGoals" placeholder="e.g. Finish my dissertation, exercise 3x a week, grow my freelance client base…"></textarea>
+      <div class="form-nav">
+        <button class="btn-back" onclick="prevStep(3)">← Back</button>
+        <button class="btn-next" onclick="nextStep(3)">Continue →</button>
+      </div>
+    </div>
+
+    <!-- STEP 4: Call Times -->
+    <div class="step-form" data-step="4">
+      <p class="step-q">When do you want your daily calls?</p>
+      <p class="step-hint">Choose a morning time to set intentions and an evening time to reflect. You can change these anytime via WhatsApp.</p>
+      <div class="time-row">
+        <div>
+          <div class="time-label">☀️ Morning Huddle</div>
+          <input type="time" class="form-input" id="inputMorning" value="08:00">
+        </div>
+        <div>
+          <div class="time-label">🌙 Evening Reflection</div>
+          <input type="time" class="form-input" id="inputEvening" value="19:00">
+        </div>
+      </div>
+      <div class="form-nav">
+        <button class="btn-back" onclick="prevStep(4)">← Back</button>
+        <button class="btn-next" onclick="nextStep(4)">Continue →</button>
+      </div>
+    </div>
+
+    <!-- STEP 5: Permission -->
+    <div class="step-form" data-step="5">
+      <p class="step-q">Can Yourly call your number?</p>
+      <p class="step-hint">Voice calls are the core of the Yourly experience — they create real accountability in a way messages alone can't.</p>
+
+      <div class="permission-card perm-yes" onclick="selectPermission('yes', this)">
+        <div class="perm-icon">✅</div>
+        <div class="perm-text">
+          <h4>Yes, you have my permission</h4>
+          <p>Yourly can call me at my scheduled times for my morning and evening sessions.</p>
+        </div>
+      </div>
+
+      <div class="permission-card perm-no" onclick="selectPermission('no', this)">
+        <div class="perm-icon">🚫</div>
+        <div class="perm-text">
+          <h4>No, messages only please</h4>
+          <p>Note: Voice calls are a core feature. WhatsApp-only mode has limited accountability support.</p>
+        </div>
+      </div>
+
+      <div class="form-nav">
+        <button class="btn-back" onclick="prevStep(5)">← Back</button>
+        <button class="btn-next" onclick="nextStep(5)">Complete Setup →</button>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<!-- ======= SUCCESS ======= -->
+<section id="success">
+  <div class="success-ring">🎉</div>
+  <h2 class="success-title">You're all set,<br><span id="successName" style="color: var(--clay);"></span>!</h2>
+  <p class="success-body">Your Yourly account is ready. Expect your first morning huddle call at <strong id="successMorning" style="color: var(--gold);"></strong>. Yourly will reach you on WhatsApp in the meantime.</p>
+
+  <div class="summary-card">
+    <div class="summary-row">
+      <span class="sum-key">Name</span>
+      <span class="sum-val" id="sumName">—</span>
+    </div>
+    <div class="summary-row">
+      <span class="sum-key">WhatsApp</span>
+      <span class="sum-val" id="sumPhone">—</span>
+    </div>
+    <div class="summary-row">
+      <span class="sum-key">Morning Call</span>
+      <span class="sum-val" id="sumMorning">—</span>
+    </div>
+    <div class="summary-row">
+      <span class="sum-key">Evening Call</span>
+      <span class="sum-val" id="sumEvening">—</span>
+    </div>
+    <div class="summary-row">
+      <span class="sum-key">Voice Calls</span>
+      <span class="sum-val" id="sumPermission">—</span>
+    </div>
+  </div>
+
+  <a class="whatsapp-btn" href="#" id="whatsappLink">
+    <svg width="22" height="22" viewBox="0 0 32 32" fill="white"><path d="M16 0C7.164 0 0 7.164 0 16c0 2.827.738 5.48 2.028 7.788L.08 31.04a.998.998 0 001.217 1.194l7.45-2.01A15.931 15.931 0 0016 32c8.836 0 16-7.164 16-16S24.836 0 16 0zm8.44 22.56c-.36.98-2.1 1.88-2.88 1.94-.76.06-1.46.38-4.94-1.02-4.14-1.66-6.8-5.86-7-6.14-.2-.28-1.58-2.1-1.58-4.02 0-1.9 1.02-2.86 1.38-3.24.36-.38.78-.48 1.04-.48.26 0 .52.002.74.01.24.01.56-.09.88.68.34.8 1.16 2.72 1.26 2.92.1.2.16.44.04.7-.12.26-.18.42-.36.64-.18.22-.38.5-.54.68-.18.2-.36.4-.16.78.2.38.9 1.52 1.94 2.46 1.36 1.24 2.52 1.64 2.88 1.82.36.18.56.16.76-.1.2-.26.86-1 1.1-1.36.24-.36.48-.3.8-.18.32.12 2.04.96 2.4 1.14.36.18.6.26.68.4.08.14.08.8-.28 1.78z"/></svg>
+    Open in WhatsApp
+  </a>
+</section>
+
+<!-- Toast -->
+<div class="toast" id="toast"></div>
+
+<script>
+  let userData = {
+    name: '', phone: '', goals: '', morning: '08:00', evening: '19:00', permission: ''
+  };
+
+  const TOTAL_STEPS = 5;
+  const progressFill = document.getElementById('progressFill');
+
+  function startOnboarding() {
+    document.getElementById('landing').style.display = 'none';
+    document.getElementById('how').style.display = 'none';
+    document.getElementById('onboarding').classList.add('active');
+    window.scrollTo(0, 0);
+  }
+
+  function scrollToHow() {
+    document.getElementById('how').scrollIntoView({ behavior: 'smooth' });
+  }
+
+  function showToast(msg) {
+    const t = document.getElementById('toast');
+    t.textContent = msg;
+    t.classList.add('show');
+    setTimeout(() => t.classList.remove('show'), 3000);
+  }
+
+  function formatTime(t) {
+    const [h, m] = t.split(':');
+    const hr = parseInt(h);
+    const ampm = hr >= 12 ? 'PM' : 'AM';
+    const display = hr % 12 || 12;
+    return `${display}:${m} ${ampm}`;
+  }
+
+  function validateStep(step) {
+    if (step === 1) {
+      const v = document.getElementById('inputName').value.trim();
+      if (!v) { showToast('Please enter your name.'); return false; }
+      userData.name = v;
+    }
+    if (step === 2) {
+      const v = document.getElementById('inputPhone').value.trim();
+      if (!v || v.length < 7) { showToast('Please enter a valid phone number.'); return false; }
+      userData.phone = v;
+    }
+    if (step === 3) {
+      const v = document.getElementById('inputGoals').value.trim();
+      if (!v) { showToast('Tell us a bit about your goals.'); return false; }
+      userData.goals = v;
+    }
+    if (step === 4) {
+      const m = document.getElementById('inputMorning').value;
+      const e = document.getElementById('inputEvening').value;
+      userData.morning = m;
+      userData.evening = e;
+    }
+    if (step === 5) {
+      if (!userData.permission) { showToast('Please select a calling preference.'); return false; }
+      if (userData.permission === 'no') {
+        const again = confirm('Voice calls are a core part of the Yourly experience. Are you sure you want to continue without them?');
+        if (!again) return false;
+      }
+    }
+    return true;
+  }
+
+  function nextStep(current) {
+    if (!validateStep(current)) return;
+    if (current === TOTAL_STEPS) {
+      completeOnboarding();
+      return;
+    }
+    const next = current + 1;
+    document.querySelector(`[data-step="${current}"]`).classList.remove('active');
+    document.querySelector(`[data-step="${next}"]`).classList.add('active');
+    progressFill.style.width = `${(next / TOTAL_STEPS) * 100}%`;
+  }
+
+  function prevStep(current) {
+    const prev = current - 1;
+    document.querySelector(`[data-step="${current}"]`).classList.remove('active');
+    document.querySelector(`[data-step="${prev}"]`).classList.add('active');
+    progressFill.style.width = `${(prev / TOTAL_STEPS) * 100}%`;
+  }
+
+  function selectPermission(choice, el) {
+    document.querySelectorAll('.permission-card').forEach(c => c.classList.remove('selected'));
+    el.classList.add('selected');
+    userData.permission = choice;
+  }
+
+  function completeOnboarding() {
+    // Populate success screen
+    document.getElementById('successName').textContent = userData.name;
+    document.getElementById('successMorning').textContent = formatTime(userData.morning);
+
+    document.getElementById('sumName').textContent = userData.name;
+    document.getElementById('sumPhone').textContent = userData.phone;
+    document.getElementById('sumMorning').textContent = formatTime(userData.morning);
+    document.getElementById('sumEvening').textContent = formatTime(userData.evening);
+    document.getElementById('sumPermission').textContent = userData.permission === 'yes' ? '✓ Enabled' : '✗ Disabled';
+
+    // Build WhatsApp link
+    const phone = userData.phone.replace(/\D/g, '');
+    const msg = encodeURIComponent(`Hi! I just signed up for Yourly. I'm ${userData.name} and I'm excited to start my accountability journey! My goals: ${userData.goals}`);
+    document.getElementById('whatsappLink').href = `https://wa.me/yourly_number?text=${msg}`;
+
+    // Show success
+    document.getElementById('onboarding').classList.remove('active');
+    document.getElementById('success').classList.add('active');
+    window.scrollTo(0, 0);
+  }
+
+  // Allow Enter to advance
+  document.querySelectorAll('.form-input').forEach(input => {
+    input.addEventListener('keydown', e => {
+      if (e.key === 'Enter' && input.tagName !== 'TEXTAREA') {
+        const step = parseInt(input.closest('.step-form').dataset.step);
+        nextStep(step);
+      }
+    });
+  });
+</script>
+
+</body>
+</html>
